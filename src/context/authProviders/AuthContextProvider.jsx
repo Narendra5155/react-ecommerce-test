@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { AuthContext, getCurrentUserDetailsFromLocal, login, logout, registerUser } from "./authUtils"
 
 function AuthContextProvider({children}) {
@@ -8,7 +8,7 @@ function AuthContextProvider({children}) {
 
   const logoutCurrent = useCallback(() => {
     logout()
-    setCurrentUser(getCurrentUserDetailsFromLocal)
+    setCurrentUser(getCurrentUserDetailsFromLocal())
   }, [])
   
   const loginCurrent = useCallback((username, password) => {
@@ -22,12 +22,15 @@ function AuthContextProvider({children}) {
       console.log(message)
       throw e
     }
-    },[])
-
+  }, [])
+  
+  const isAuth = useMemo(() => {
+    return currentUser.isAuthenticated
+  }, [currentUser])
   
   return (
     <AuthContext.Provider value={{
-      isAuth: currentUser.isAuthenticated,
+      isAuth,
       currentUser:currentUser,
       login: loginCurrent,
       signUp: registerUser,

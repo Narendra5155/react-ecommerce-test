@@ -6,7 +6,7 @@ export const getCurrentUserDetailsFromLocal = ()=>{
   if (user) {
     return {
       username: user.username,
-      isAuthenticated: true,
+      isAuthenticated: user.isAuthenticated,
       isAdmin:user.isAdmin
     }
   }
@@ -43,12 +43,15 @@ export const registerUser = (username="",password="",isAdmin=false) => {
     isAdmin: isAdmin,
     password: password
   })
+
+  localStorage.setItem(ALL_USER_RECORD,JSON.stringify(allUsers))
 }
 
 
 export const login = (username, password) => {
   const allUsers = getAllRegisteredUsers()
-  const user = allUsers.find(item => item.username === username.trim())
+  const user = allUsers.find(item => item.username === username?.trim())
+  console.log(user,username,password)
   if (!user) {
     throw new Error("No such User Exist")
   }
