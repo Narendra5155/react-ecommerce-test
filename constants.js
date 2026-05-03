@@ -9,3 +9,7 @@ export const routes = {
   cart: "/cart",
   unAuthorized: "/not-authorized",
 };
+
+
+export const INVENTORY_KEY = "inventory"
+export const INVENTORY_API_URL = "https://fakestoreapi.com/products"
