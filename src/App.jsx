@@ -11,6 +11,7 @@ import CartPage from "./pages/CartPage"
 import InventoryPage from "./pages/InventoryPage"
 import ProtectedRoute from "./wrappers/ProtectedRoute"
 import NonAuthorizePage from "./pages/NonAuthorizePage"
+import ThemeProviders from "./context/ThemeProviders/ThemeProviders"
 
 
 
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
 ])
 function App() {
   return (
+    <ThemeProviders>
     <AuthContextProvider>
       <InventoryProvider>
         <CartProvider>
@@ -55,6 +57,7 @@ function App() {
         </CartProvider>
       </InventoryProvider>
     </AuthContextProvider>
+    </ThemeProviders>
   )
 }
 
