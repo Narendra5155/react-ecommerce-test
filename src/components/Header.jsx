@@ -27,6 +27,7 @@ function Header() {
   }, []);
   return (
     <div className="flex flex-row justify-center gap-4 ">
+      <NavLink to={routes.products} className={colorClassname}>Products</NavLink>
       {!isAuth ? (
         <>
           <NavLink to={routes.login} className={colorClassname}>

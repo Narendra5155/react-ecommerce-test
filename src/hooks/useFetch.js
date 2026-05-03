@@ -14,7 +14,7 @@ export const useFetch = (url) => {
     try {
       
       const response = await fetch(url, { signal: abortController.current.signal })
-      const json = response.json()
+      const json = await response.json()
       
       setData(json)
       setIsLoading(false)
