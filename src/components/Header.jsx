@@ -9,9 +9,9 @@ function Header() {
   const userAvatar = useMemo(() => {
     if (!isAuth) return null;
     return (
-      <div>
-        <p>{currentUser.username}</p>
-        <p>{currentUser.isAdmin ? "Admin":"User"}</p>
+      <div className="flex flex-col justify-center">
+        <p className="text-xl font-bold">{currentUser.username}</p>
+        <p className="text-xl font-bold">{currentUser.isAdmin ? "Admin":"User"}</p>
       </div>
     );
   }, [currentUser, isAuth]);
@@ -39,6 +39,7 @@ function Header() {
         </>
       ) : (
           <>
+          <NavLink to={routes.cart} className={colorClassname}>Cart</NavLink>
             {userAvatar}
         <button
           onClick={logOut}

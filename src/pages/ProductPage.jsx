@@ -1,8 +1,10 @@
+import { useCartContext } from "../context/cartProvider/cartUtils"
 import { useInventoryContext } from "../context/inventoryProviders/inventoryUtils"
 
 function ProductPage() {
 
-  const {inventory,isLoading,error,refetch } = useInventoryContext()
+  const { inventory, isLoading, error, refetch } = useInventoryContext()
+  const { addToCart, decreaseQuantity } = useCartContext()
   return (
     <div className="max-w-4xl mx-auto p-6">
       <button onClick={refetch} className="bg-blue-500 text-white p-2 rounded-md">Refetch</button>
@@ -23,10 +25,11 @@ function ProductPage() {
             >
               <p className="text-xl font-bold mb-2 text-gray-800">{item.title}</p>
               <p className="text-lg text-purple-600 mb-1 font-semibold">${item.price}</p>
-              <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded-md" />
-              <p className="text-sm text-gray-700">
-                Quantity: <span className="font-bold">{item.quantity}</span>
-              </p>
+              <img src={item.image} alt={item.title} className="w-full h-40 object-contain rounded-md" />
+              <div>
+                <button onClick={() => addToCart(item.id)} className="bg-blue-500 text-white p-2 rounded-md">Add to Cart</button>
+                <button onClick={() => decreaseQuantity(item.id)} className="bg-red-500 text-white p-2 rounded-md">Decrease Quantity</button>
+              </div>
             </div>
           ))}
         </div>

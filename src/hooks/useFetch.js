@@ -18,11 +18,11 @@ export const useFetch = (url) => {
       const json = await response.json()
       
       setData(json)
-      setIsLoading(false)
     } catch (e) {
-      const messsage = e instanceof Error ? e.message : String(e)
-      setError(messsage)
+      const message = e instanceof Error ? e.message : String(e)
+      setError(message)
     }
+    setIsLoading(false)
   }, [url])
   
   useEffect(() => {

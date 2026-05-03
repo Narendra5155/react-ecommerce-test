@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { getItemsFromInventory, InventoryContext } from "./inventoryUtils";
+import {  InventoryContext } from "./inventoryUtils";
 import { useFetch } from "../../hooks/useFetch";
 import { INVENTORY_API_URL } from "../../../constants";
 
 function InventoryProvider({ children }) {
-  const [inventory, setInventory] = useState(getItemsFromInventory());
+  const [inventory, setInventory] = useState(null);
   const { data, isLoading, error, refetch } = useFetch(INVENTORY_API_URL);
 
   const reduceQuantity = useCallback((id) => { 
@@ -20,7 +20,7 @@ function InventoryProvider({ children }) {
 
   useEffect(() => {
     const updateInventory = async () => {
-      if (data) setInventory(data.map(item => ({
+    setInventory(data?.map(item => ({
         ...item,
         quantity:10
       })));

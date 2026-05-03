@@ -6,6 +6,8 @@ import SignupPage from "./pages/SignupPage"
 import AuthContextProvider from "./context/authProviders/AuthContextProvider"
 import ProductPage from "./pages/ProductPage"
 import InventoryProvider from "./context/inventoryProviders/InventoryProvider"
+import CartProvider from "./context/cartProvider/CardProvider"
+import CartPage from "./pages/CartPage"
 
 
 
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
         path: routes.products,
         element:<ProductPage/>
       },
+      {
+        path: routes.cart,
+        element:<CartPage/>
+      },
     ]
   }
 ])
@@ -33,7 +39,9 @@ function App() {
   return (
     <AuthContextProvider>
       <InventoryProvider>
-    <RouterProvider router={router}/>
+        <CartProvider>
+          <RouterProvider router={router}/>
+        </CartProvider>
       </InventoryProvider>
     </AuthContextProvider>
   )
