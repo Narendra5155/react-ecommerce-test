@@ -7,7 +7,6 @@ import { useCartContext } from "../context/cartProvider/cartUtils";
 function Header() {
   const { isAuth, logOut, currentUser } = useAuthContext();
   const { totalCartItems } = useCartContext();
-  console.log(currentUser);
 
   const userAvatar = useMemo(() => {
     if (!isAuth) return null;

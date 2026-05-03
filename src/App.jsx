@@ -9,6 +9,8 @@ import InventoryProvider from "./context/inventoryProviders/InventoryProvider"
 import CartProvider from "./context/cartProvider/CardProvider"
 import CartPage from "./pages/CartPage"
 import InventoryPage from "./pages/InventoryPage"
+import ProtectedRoute from "./wrappers/ProtectedRoute"
+import NonAuthorizePage from "./pages/NonAuthorizePage"
 
 
 
@@ -35,7 +37,11 @@ const router = createBrowserRouter([
       },
       {
         path: routes.inventory,
-        element:<InventoryPage/>
+        element:<ProtectedRoute><InventoryPage/></ProtectedRoute>
+      },
+      {
+        path: routes.unAuthorized,
+        element:<NonAuthorizePage/>
       }
     ]
   }
