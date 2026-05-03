@@ -41,8 +41,11 @@ function CardProvider({children}) {
   }, [increaseQuantity,cart])
 
   const clearCart = useCallback(() => {
+    cart.forEach(item => {
+      increaseQuantity(item.id,item.quantity)
+    })
     setCart([])
-  }, [])
+  }, [cart,increaseQuantity])
 
   const totalCartItems = useMemo(() => {
     return cart.reduce((acc, item) => acc + item.quantity, 0)

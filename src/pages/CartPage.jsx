@@ -33,7 +33,7 @@ function CartPage() {
                 <p className="text-sm text-gray-700">
                 Quantity: <span className="font-bold">{item.count}</span>
               </p>
-                <button onClick={() => addToCart(item.id)} className="bg-blue-500 text-white p-2 rounded-md">+</button>
+                <button onClick={() => addToCart(item.id)} disabled={item.quantity === 0} className={`bg-blue-500 text-white p-2 rounded-md ${item.quantity === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>+</button>
               </div>
             </div>
           ))}
