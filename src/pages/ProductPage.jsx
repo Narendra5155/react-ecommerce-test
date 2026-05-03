@@ -23,6 +23,7 @@ function ProductPage() {
             >
               <p className="text-xl font-bold mb-2 text-gray-800">{item.title}</p>
               <p className="text-lg text-purple-600 mb-1 font-semibold">${item.price}</p>
+              <img src={item.image} alt={item.title} className="w-full h-40 object-cover rounded-md" />
               <p className="text-sm text-gray-700">
                 Quantity: <span className="font-bold">{item.quantity}</span>
               </p>
