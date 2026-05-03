@@ -9,6 +9,7 @@ export const useFetch = (url) => {
 
   
   const fetchData = useCallback(async () => {
+    if(abortController.current) abortController.current.abort()
     abortController.current = new AbortController()
     setIsLoading(true)
     try {
