@@ -3,84 +3,112 @@ import { routes } from "../../constants";
 import { useAuthContext } from "../context/authProviders/authUtils";
 import { useCallback, useMemo } from "react";
 import { useCartContext } from "../context/cartProvider/cartUtils";
+import { useThemeContext } from "../context/ThemeProviders/themeUtils";
 
 function Header() {
   const { isAuth, logOut, currentUser } = useAuthContext();
-  const { totalCartItems,clearCart } = useCartContext();
+  const { totalCartItems, clearCart } = useCartContext();
+  const { theme, setTheme } = useThemeContext();
   const navigate = useNavigate();
+
   const handleLogout = useCallback(() => {
     logOut();
     clearCart();
     navigate(routes.login);
-  }, [logOut, navigate,clearCart]);
+  }, [logOut, navigate, clearCart]);
 
-  const userAvatar = useMemo(() => {
-    if (!isAuth) return null;
-    return (
-      <div className="flex flex-col justify-center">
-        <p className="text-xl font-bold">{currentUser.username}</p>
-        <p className="text-xl font-bold">
-          {currentUser.isAdmin ? "Admin" : "User"}
-        </p>
-      </div>
-    );
-  }, [currentUser, isAuth]);
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === "dark" ? "light" : "dark");
+  }, [setTheme]);
 
-  const colorClassname = useCallback(({ isActive, isPending }) => {
-    return (
-      (isActive
-        ? "text-purple-500 "
-        : isPending
-          ? "text-red-600"
-          : "text-blue-700") + " text-xl flex flex-row items-center justify-center gap-2"
-    );
+  const navPillClass = useCallback(({ isActive, isPending }) => {
+    if (isActive) return "nav-pill nav-pill-active";
+    if (isPending) return "nav-pill nav-pill-pending";
+    return "nav-pill";
   }, []);
 
+  const userInitial = useMemo(() => {
+    return currentUser?.username?.[0]?.toUpperCase() ?? "?";
+  }, [currentUser]);
+
   return (
-    <div className="flex flex-row justify-center gap-4 ">
-      <NavLink to={routes.products} className={colorClassname}>
-        Products
-      </NavLink>
-      {
-        isAuth && currentUser.isAdmin && (
-          <NavLink to={routes.inventory} className={colorClassname}>
-            Inventory
+    <nav className="app-header sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between gap-6">
+
+        {/* Brand */}
+        <NavLink
+          to={routes.products}
+          className="text-price text-lg font-bold tracking-tight shrink-0"
+        >
+          ShopEase
+        </NavLink>
+
+        {/* Center — main nav */}
+        <div className="flex items-center gap-1">
+          <NavLink to={routes.products} className={navPillClass}>
+            Products
           </NavLink>
-        )
-      }
-      {!isAuth ? (
-        <>
-          <NavLink to={routes.login} className={colorClassname}>
-            Login
-          </NavLink>
-          <NavLink to={routes.signup} className={colorClassname}>
-            SignUp
-          </NavLink>
-        </>
-      ) : (
-        <>
-          <div className="relative flex flex-row items-center justify-center gap-2">
-            <NavLink to={routes.cart} className={colorClassname}>
-              Cart
+          {isAuth && currentUser.isAdmin && (
+            <NavLink to={routes.inventory} className={navPillClass}>
+              Inventory
+            </NavLink>
+          )}
+        </div>
+
+        {/* Right — actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          {!isAuth ? (
+            <>
+              <NavLink to={routes.login} className={navPillClass}>
+                Login
               </NavLink>
-              {totalCartItems > 0 && (
-            <p className="text-sm text-gray-700">
-              <span className=" bg-red-500 text-white p-2 rounded-full text-xs">
-                {totalCartItems}
-              </span>
-            </p>
-            )}
-          </div>
-          {userAvatar}
-          <button
-            onClick={handleLogout}
-            className="bg-blue-500 text-white p-2 rounded-md"
-          >
-            LogOut
+              <NavLink
+                to={routes.signup}
+                className="btn-primary px-4 py-2 rounded-lg text-sm font-medium"
+              >
+                Sign Up
+              </NavLink>
+            </>
+          ) : (
+            <>
+              {/* Cart with badge */}
+              <NavLink
+                to={routes.cart}
+                className={({ isActive }) =>
+                  "relative " + (isActive ? "nav-pill nav-pill-active" : "nav-pill")
+                }
+              >
+                🛒 Cart
+                {totalCartItems > 0 && (
+                  <span className="cart-badge absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] rounded-full text-xs flex items-center justify-center px-1 font-bold leading-none">
+                    {totalCartItems}
+                  </span>
+                )}
+              </NavLink>
+
+              {/* User pill */}
+              <div className="form-wrapper flex items-center gap-2 px-3 py-1.5 rounded-xl border">
+                <div className="user-avatar">{userInitial}</div>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-sm font-semibold text-primary">{currentUser.username}</span>
+                  <span className="text-xs text-muted">{currentUser.isAdmin ? "Admin" : "User"}</span>
+                </div>
+              </div>
+
+              <button onClick={handleLogout} className="btn-ghost">
+                Logout
+              </button>
+            </>
+          )}
+
+          {/* Theme toggle */}
+          <button onClick={toggleTheme} className="btn-icon" aria-label="Toggle theme">
+            {theme === "dark" ? "☀️" : "🌙"}
           </button>
-        </>
-      )}
-    </div>
+        </div>
+
+      </div>
+    </nav>
   );
 }
 

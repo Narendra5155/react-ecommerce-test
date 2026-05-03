@@ -25,7 +25,7 @@ function LoginPage() {
     }
 
     try {
-      login(username,password);
+      login(username, password);
       alert("Logged in successfully");
 
       const state = location.state;
@@ -39,34 +39,38 @@ function LoginPage() {
       const message = e instanceof Error ? e.message : String(e);
       setError(message);
     }
-  },[username,password,location,login,navigate]);
+  }, [username, password, location, login, navigate]);
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen ">
-      <div className="flex flex-col items-center justify-center gap-2 p-4 border-2">
-        
-      {
-        error && <p className="text-red-500">{error}</p>
-      }
-      <label className="flex  items-center justify-center gap-2">
-        Username
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border-2 border-gray-300 rounded-md p-2"
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="form-wrapper flex flex-col items-center justify-center gap-2 p-4 border-2 rounded-lg">
+        {error && <p className="text-error">{error}</p>}
+        <label className="flex items-center justify-center gap-2">
+          Username
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input-field border-2 rounded-md p-2"
           />
-      </label>
-      <label className="flex  items-center justify-center gap-2">
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border-2 border-gray-300 rounded-md p-2"
+        </label>
+        <label className="flex items-center justify-center gap-2">
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field border-2 rounded-md p-2"
           />
-      </label>
-      <button onClick={handleLogin} disabled={isDisabled} className={`bg-blue-500 text-white p-2 rounded-md ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}>Login</button>
-          </div>
+        </label>
+        <button
+          onClick={handleLogin}
+          disabled={isDisabled}
+          className={`btn-primary p-2 rounded-md ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        >
+          Login
+        </button>
+      </div>
     </div>
   );
 }
