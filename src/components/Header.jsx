@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { routes } from "../../constants";
 import { useAuthContext } from "../context/authProviders/authUtils";
 import { useCallback, useMemo } from "react";
@@ -6,7 +6,13 @@ import { useCartContext } from "../context/cartProvider/cartUtils";
 
 function Header() {
   const { isAuth, logOut, currentUser } = useAuthContext();
-  const { totalCartItems } = useCartContext();
+  const { totalCartItems,clearCart } = useCartContext();
+  const navigate = useNavigate();
+  const handleLogout = useCallback(() => {
+    logOut();
+    clearCart();
+    navigate(routes.login);
+  }, [logOut, navigate,clearCart]);
 
   const userAvatar = useMemo(() => {
     if (!isAuth) return null;
@@ -67,7 +73,7 @@ function Header() {
           </div>
           {userAvatar}
           <button
-            onClick={logOut}
+            onClick={handleLogout}
             className="bg-blue-500 text-white p-2 rounded-md"
           >
             LogOut

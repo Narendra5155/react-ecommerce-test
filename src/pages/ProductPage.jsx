@@ -10,16 +10,24 @@ function ProductPage() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
   const { inventory, isLoading, error, refetch } = useInventoryContext();
-  const { addToCart, decreaseQuantity } = useCartContext();
+  const { addToCart, decreaseQuantity, cart } = useCartContext();
   const navigate = useNavigate();
   const { isAuth } = useAuthContext();
   const [category, setCategory] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const inventoryWithCartCount = useMemo(() => {
+    return inventory?.map((item) => ({
+      ...item,
+      count: cart.find(cartItem => cartItem.id === item.id)?.quantity || 0
+    }))
+  }, [inventory, cart])
 
   const filteredInventory = useMemo(() => {
-    return inventory?.filter((item) =>
+    return inventoryWithCartCount?.filter((item) =>
       item.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
-  }, [inventory, debouncedSearch]);
+  }, [inventoryWithCartCount, debouncedSearch]);
 
   const categories = useMemo(() => {
     return [...new Set(inventory?.map((item) => item.category))];
@@ -33,6 +41,12 @@ function ProductPage() {
       (item) => item.category.toLowerCase() === category.toLowerCase(),
     );
   }, [filteredInventory, category]);
+
+  const filterWithCategorySearchRatingInventory = useMemo(() => {
+    return filteredWithCategoryInventory?.filter(
+      (item) => item.rating.rate >= rating,
+    );
+  }, [filteredWithCategoryInventory,rating]);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -56,6 +70,18 @@ function ProductPage() {
             </option>
           ))}
         </select>
+        <select
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          className="w-full p-2 rounded-md border border-gray-300"
+        >
+          <option value="0">All Ratings</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </div>
       <button
         onClick={refetch}
@@ -77,10 +103,10 @@ function ProductPage() {
             No products found
           </p>
         )}
-      {filteredWithCategoryInventory &&
-        filteredWithCategoryInventory.length > 0 && (
+      {filterWithCategorySearchRatingInventory &&
+        filterWithCategorySearchRatingInventory.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredWithCategoryInventory.map((item) => (
+            {filterWithCategorySearchRatingInventory.map((item) => (
               <div
                 key={item.id}
                 className="bg-white shadow-md rounded-lg p-6 flex flex-col items-start border border-gray-100 hover:shadow-lg transition"
@@ -98,8 +124,11 @@ function ProductPage() {
                       <span className="font-bold">{item.quantity}</span>
                     </p>
                   </div>
-             
+                  <div>
+                    
                     <p>Rating: {item.rating.rate}({item.rating.count})</p>
+                    <p>{item.category}</p>
+                    </div>
                 </div>
                 <div className={`w-full h-40 object-contain rounded-md`}>
                   <img
@@ -120,6 +149,7 @@ function ProductPage() {
                     >
                       +
                     </button>
+                    {item.count}
                     <button
                       onClick={() => decreaseQuantity(item.id)}
                       className="bg-red-500 text-white p-2 rounded-md"
