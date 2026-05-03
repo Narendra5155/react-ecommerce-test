@@ -10,8 +10,8 @@ function InventoryProvider({ children }) {
   const reduceQuantity = useCallback((id) => { 
     setInventory(prev=>prev.map(item=> item.id === id ? {...item,quantity:item.quantity>0 ? item.quantity-1 : 0}:item))
   }, [])
-  const increaseQuantity = useCallback((id) => { 
-    setInventory(prev=>prev.map(item=> item.id === id ? {...item,quantity:item.quantity+1}:item))
+  const increaseQuantity = useCallback((id,count=1) => { 
+    setInventory(prev=>prev.map(item=> item.id === id ? {...item,quantity:item.quantity+count}:item))
   }, [])
   
   const removeProduct = useCallback((id) => {
