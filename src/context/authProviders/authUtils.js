@@ -51,7 +51,6 @@ export const registerUser = (username="",password="",isAdmin=false) => {
 export const login = (username, password) => {
   const allUsers = getAllRegisteredUsers()
   const user = allUsers.find(item => item.username === username?.trim())
-  console.log(user,username,password)
   if (!user) {
     throw new Error("No such User Exist")
   }

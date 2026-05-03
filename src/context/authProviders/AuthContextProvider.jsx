@@ -15,7 +15,7 @@ function AuthContextProvider({children}) {
     try {
       
       const user = login(username,password)
-      setCurrentUser({username:user.username,isAdmin:username.isAdmin,isAuthenticated:true})
+      setCurrentUser({username:user.username,isAdmin:user.isAdmin,isAuthenticated:true})
     }
     catch (e) {
       const message = e instanceof Error ? e.message : String(e)

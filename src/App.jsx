@@ -8,6 +8,7 @@ import ProductPage from "./pages/ProductPage"
 import InventoryProvider from "./context/inventoryProviders/InventoryProvider"
 import CartProvider from "./context/cartProvider/CardProvider"
 import CartPage from "./pages/CartPage"
+import InventoryPage from "./pages/InventoryPage"
 
 
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         path: routes.cart,
         element:<CartPage/>
       },
+      {
+        path: routes.inventory,
+        element:<InventoryPage/>
+      }
     ]
   }
 ])

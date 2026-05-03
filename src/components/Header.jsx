@@ -7,6 +7,7 @@ import { useCartContext } from "../context/cartProvider/cartUtils";
 function Header() {
   const { isAuth, logOut, currentUser } = useAuthContext();
   const { totalCartItems } = useCartContext();
+  console.log(currentUser);
 
   const userAvatar = useMemo(() => {
     if (!isAuth) return null;
@@ -35,6 +36,13 @@ function Header() {
       <NavLink to={routes.products} className={colorClassname}>
         Products
       </NavLink>
+      {
+        isAuth && currentUser.isAdmin && (
+          <NavLink to={routes.inventory} className={colorClassname}>
+            Inventory
+          </NavLink>
+        )
+      }
       {!isAuth ? (
         <>
           <NavLink to={routes.login} className={colorClassname}>
