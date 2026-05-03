@@ -34,10 +34,15 @@ function ProductPage() {
               <p className="text-sm text-gray-700">
                 Stock Available: <span className="font-bold">{item.quantity}</span>
               </p>
-              <img src={item.image} alt={item.title} className="w-full h-40 object-contain rounded-md" />
+              <div className={`w-full h-40 object-contain rounded-md`}>
+                <img src={item.image} alt={item.title} className={`w-full h-40 object-contain rounded-md ${item.quantity > 0 ? "opacity-100" : "opacity-50"}`} />
+                <p className="text-sm text-gray-700 text-center">
+                  {item.quantity > 0 ? "" : "Out of Stock"}
+                </p>
+                </div>
               {isAuth ? (
                 <div>
-                  <button onClick={() => addToCart(item.id)} className="bg-blue-500 text-white p-2 rounded-md">+</button>
+                  <button onClick={() => addToCart(item.id)} disabled={item.quantity === 0} className={`bg-blue-500 text-white p-2 rounded-md ${item.quantity === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>+</button>
                   <button onClick={() => decreaseQuantity(item.id)} className="bg-red-500 text-white p-2 rounded-md">-</button>
                 </div>
               ) : (
