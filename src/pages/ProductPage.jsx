@@ -9,7 +9,7 @@ function ProductPage() {
       {isLoading && (
         <p className="text-lg text-gray-500 text-center my-8">Loading...</p>
       )}
-      {error && (
+      {error && !inventory && (
         <p className="text-red-600 text-center font-semibold my-8">
           Error: {error}
         </p>
